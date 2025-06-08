@@ -144,11 +144,11 @@ fmeserver-2023-2:
   resources:
     core:
       requests:
-        memory: 1.5Gi
+        memory: 1Gi
         cpu: 200m
     web:
       requests:
-        memory: 1Gi
+        memory: 750Gi
         cpu: 200m
       limits:
         memory:
