@@ -1,0 +1,10 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-itlusions-nl
+  namespace: itl-website
+spec:
+  redirectRegex:
+    regex: ^https?://www\.itlusions\.(com|nl)(.*)
+    replacement: https://itlusions.$1$2
+    permanent: true
