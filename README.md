@@ -24,7 +24,7 @@ Voor directe deployment met Helm CLI:
 
 ```bash
 helm install fmeserver-prod ./charts/fmeserver-2025.2 \
-  -n fmeserver-prod --create-namespace
+  -n itl-fme-prod-2025-2 --create-namespace
 ```
 
 📖 **Zie [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) voor Helm deployment guide**
@@ -77,17 +77,17 @@ ITL.FMEServer/
 # FME Server 2023.2
 helm install fmeserver-dev ./charts/fmeserver-2023.2 \
   -f ./charts/fmeserver-2023.2/values.yaml \
-  -n fmeserver-dev --create-namespace
+  -n itl-fme-dev-2023-2 --create-namespace
 
 # FME Server 2024.0
 helm install fmeserver-test ./charts/fmeserver-2024.0 \
   -f ./charts/fmeserver-2024.0/values.yaml \
-  -n fmeserver-test --create-namespace
+  -n itl-fme-test-2024-0 --create-namespace
 
 # FME Server 2024.2 (nieuwste)
 helm install fmeserver-prod ./charts/fmeserver-2024.2 \
   -f ./charts/fmeserver-2024.2/values.yaml \
-  -n fmeserver-prod --create-namespace
+  -n itl-fme-staging-2024-2 --create-namespace
 ```
 
 ### Upgrade
@@ -96,7 +96,7 @@ helm install fmeserver-prod ./charts/fmeserver-2024.2 \
 # Upgrade naar nieuwere patch versie binnen zelfde major/minor
 helm upgrade fmeserver-dev ./charts/fmeserver-2023.2 \
   -f ./charts/fmeserver-2023.2/values.yaml \
-  -n fmeserver-dev
+  -n itl-fme-dev-2023-2
 
 # Migratie naar nieuwe major/minor versie
 # 1. Backup huidige installatie
@@ -115,10 +115,12 @@ helm list -A | grep fmeserver
 
 | Omgeving | Versie | Namespace | Hostname |
 |----------|--------|-----------|----------|
-| Development | 2023.2.3 | fmeserver-dev | fme-2023-2.itlusions.nl |
-| Test | 2024.0.x | fmeserver-test | fme-2024-0.itlusions.nl |
-| Staging | 2024.2.x | fmeserver-staging | fme-2024-2.itlusions.nl |
-| Production | 2025.2.x | fmeserver-prod | fme-2025-2.itlusions.nl |
+| Development | 2023.2.3 | itl-fme-dev-2023-2 | fme-2023-2.itlusions.nl |
+| Test | 2024.0.x | itl-fme-test-2024-0 | fme-2024-0.itlusions.nl |
+| Staging | 2024.2.x | itl-fme-staging-2024-2 | fme-2024-2.itlusions.nl |
+| Production | 2025.2.x | itl-fme-prod-2025-2 | fme-2025-2.itlusions.nl |
+
+**Namespace Patroon:** `itl-fme-{env}-{version}`
 
 ## Versie Management
 

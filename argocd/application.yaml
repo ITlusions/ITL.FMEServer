@@ -29,7 +29,7 @@ spec:
   
   destination:
     server: https://kubernetes.default.svc
-    namespace: fmeserver-prod
+    namespace: itl-fme-prod-2025-2
   
   syncPolicy:
     automated:
@@ -74,4 +74,4 @@ spec:
     - name: 'Chart Path'
       value: 'charts/fmeserver-2025.2'
     - name: 'Namespace'
-      value: 'fmeserver-prod'
+      value: 'itl-fme-prod-2025-2'

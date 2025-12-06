@@ -16,7 +16,7 @@ spec:
       - version: "2023.2"
         versionTag: "2023-2"
         chartPath: charts/fmeserver-2023.2
-        namespace: fmeserver-dev
+        namespace: itl-fme-dev-2023-2
         hostname: fme-2023-2.itlusions.nl
         tlsSecretName: fme-2023-2-itlusions-nl-tls
       
@@ -24,7 +24,7 @@ spec:
       - version: "2024.0"
         versionTag: "2024-0"
         chartPath: charts/fmeserver-2024.0
-        namespace: fmeserver-test
+        namespace: itl-fme-test-2024-0
         hostname: fme-2024-0.itlusions.nl
         tlsSecretName: fme-2024-0-itlusions-nl-tls
       
@@ -32,7 +32,7 @@ spec:
       - version: "2024.2"
         versionTag: "2024-2"
         chartPath: charts/fmeserver-2024.2
-        namespace: fmeserver-staging
+        namespace: itl-fme-staging-2024-2
         hostname: fme-2024-2.itlusions.nl
         tlsSecretName: fme-2024-2-itlusions-nl-tls
       
@@ -40,7 +40,7 @@ spec:
       - version: "2025.2"
         versionTag: "2025-2"
         chartPath: charts/fmeserver-2025.2
-        namespace: fmeserver-prod
+        namespace: itl-fme-prod-2025-2
         hostname: fme-2025-2.itlusions.nl
         tlsSecretName: fme-2025-2-itlusions-nl-tls
   

@@ -20,10 +20,10 @@ Er zijn twee manieren om te deployen met ArgoCD:
 
 Een ApplicationSet is een ArgoCD resource die automatisch meerdere Applications genereert op basis van een template. Voor FME Server genereert het 4 applicaties - één per versie:
 
-- `fmeserver-2023-2` → namespace `fmeserver-dev`
-- `fmeserver-2024-0` → namespace `fmeserver-test`
-- `fmeserver-2024-2` → namespace `fmeserver-staging`
-- `fmeserver-2025-2` → namespace `fmeserver-prod`
+- `fmeserver-2023-2` → namespace `itl-fme-dev-2023-2`
+- `fmeserver-2024-0` → namespace `itl-fme-test-2024-0`
+- `fmeserver-2024-2` → namespace `itl-fme-staging-2024-2`
+- `fmeserver-2025-2` → namespace `itl-fme-prod-2025-2`
 
 **Belangrijk:** Elke versie heeft precies één omgeving. De configuratie (resources, storage, engines) wordt gelezen uit de `values.yaml` in elke chart directory.
 
@@ -80,7 +80,7 @@ spec:
   source:
     path: charts/fmeserver-2024.0
   destination:
-    namespace: fmeserver-test
+    namespace: itl-fme-test-2024-0
 ```
 
 ## ArgoCD UI
@@ -154,10 +154,16 @@ FME Server gebruikt sync wave 3 (deploy na infrastructure):
 
 | Version | Chart Path | Namespace | Hostname |
 |---------|------------|-----------|----------|
-| 2023.2 | charts/fmeserver-2023.2 | fmeserver-dev | fme-2023-2.itlusions.nl |
-| 2024.0 | charts/fmeserver-2024.0 | fmeserver-test | fme-2024-0.itlusions.nl |
-| 2024.2 | charts/fmeserver-2024.2 | fmeserver-staging | fme-2024-2.itlusions.nl |
-| 2025.2 | charts/fmeserver-2025.2 | fmeserver-prod | fme-2025-2.itlusions.nl |
+| 2023.2 | charts/fmeserver-2023.2 | itl-fme-dev-2023-2 | fme-2023-2.itlusions.nl |
+| 2024.0 | charts/fmeserver-2024.0 | itl-fme-test-2024-0 | fme-2024-0.itlusions.nl |
+| 2024.2 | charts/fmeserver-2024.2 | itl-fme-staging-2024-2 | fme-2024-2.itlusions.nl |
+| 2025.2 | charts/fmeserver-2025.2 | itl-fme-prod-2025-2 | fme-2025-2.itlusions.nl |
+
+**Namespace Patroon:** `itl-fme-{env}-{version}`
+- `itl-` prefix voor alle ITL resources
+- `fme-` component identifier
+- `{env}` = dev, test, staging, prod
+- `{version}` = versie zonder punt (2023-2, 2024-0, etc.)
 
 ### Configuratie Beheer
 
@@ -191,7 +197,7 @@ Standaard gebruikt elke chart de password uit zijn eigen `values.yaml`. Voor pro
 kubectl create secret generic fmeserver-db-secret \
   --from-literal=fmeserver-db-password=YOUR_SECURE_PASSWORD \
   --from-literal=postgres-password=YOUR_POSTGRES_PASSWORD \
-  -n fmeserver-prod
+  -n itl-fme-prod-2025-2
 
 # Update values.yaml in Git om secret te gebruiken
 # In charts/fmeserver-2025.2/values.yaml:
@@ -222,8 +228,8 @@ certManager:
 Controleer certificate status:
 
 ```bash
-kubectl get certificate -n fmeserver-prod
-kubectl describe certificate fme-2025-2-itlusions-nl-tls -n fmeserver-prod
+kubectl get certificate -n itl-fme-prod-2025-2
+kubectl describe certificate fme-2025-2-itlusions-nl-tls -n itl-fme-prod-2025-2
 ```
 
 ## Monitoring
@@ -299,16 +305,16 @@ git push
 
 ```bash
 # Check pod status
-kubectl get pods -n fmeserver-prod
+kubectl get pods -n itl-fme-prod-2025-2
 
 # Check events
-kubectl get events -n fmeserver-prod --sort-by='.lastTimestamp'
+kubectl get events -n itl-fme-prod-2025-2 --sort-by='.lastTimestamp'
 
 # Check resource usage
-kubectl top pods -n fmeserver-prod
+kubectl top pods -n itl-fme-prod-2025-2
 
 # Check PVC status
-kubectl get pvc -n fmeserver-prod
+kubectl get pvc -n itl-fme-prod-2025-2
 ```
 
 ### Sync Failures
@@ -373,7 +379,7 @@ git push
 
 # Valideer in ArgoCD
 argocd app get fmeserver-2024-0
-kubectl get pods -n fmeserver-test
+kubectl get pods -n itl-fme-test-2024-0
 
 # Na validatie, apply dezelfde wijziging naar production
 nano charts/fmeserver-2025.2/values.yaml  # Zelfde wijziging
