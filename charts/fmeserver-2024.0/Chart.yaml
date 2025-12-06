@@ -1,0 +1,9 @@
+apiVersion: v2
+name: fmeserver-2024-0
+description: FME Flow 2024.0 (formerly FME Server)
+version: 0.3.0
+appVersion: "2024.0"
+dependencies:
+  - name: fmeflow
+    repository: https://safesoftware.github.io/helm-charts
+    version: 1.0.7

@@ -1,0 +1,6 @@
+dependencies:
+- name: fmeflow
+  repository: https://safesoftware.github.io/helm-charts
+  version: 1.0.7
+digest: sha256:0fffe4c4925e88a04a4c395f155aad2d7f0a09d12b395d52759eaa100297014c
+generated: "2025-12-06T20:02:00.5941298+01:00"

@@ -1,0 +1,6 @@
+dependencies:
+- name: fmeserver-2023-2
+  repository: https://safesoftware.github.io/helm-charts
+  version: 0.2.67
+digest: sha256:555229c38f8695c9c564af8e6c11f973dca7f5244a55c21a7b5aa406d58e2ad2
+generated: "2025-12-06T19:57:43.4428932+01:00"

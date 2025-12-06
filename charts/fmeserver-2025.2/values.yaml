@@ -1,0 +1,203 @@
+fmeflow:
+  fmeserver:
+    image:
+      tag: "2025.2.0"
+      registry: docker.io
+      namespace: safesoftware
+      pullPolicy: IfNotPresent
+    database:
+      host:
+      port: '5432'
+      name: fmeserver
+      user: fmeserver
+      password: changeme
+      passwordSecret:
+      passwordSecretKey: fmeserver-db-password
+      ssl: false
+      azure: false
+      adminUser: postgres
+      adminPasswordSecret:
+      adminPasswordSecretKey: postgres-password
+      adminDatabase: postgres
+    webserver:
+      maxThreads: 200
+      experimentalJavaFlags: false
+      hikariDBMaxConnections: 30
+    forcePasswordChange: true
+    debugLevel: "NONE"
+    enableTransactionQueueTimeout: false
+    scheduler:
+      idleWaitTime: 5000
+    healthcheck:
+      enabled: true
+      liveness:
+        initialDelaySeconds: 60
+        failureThreshold: 6
+        timeoutSeconds: 5
+        periodSeconds: 10
+      readiness:
+        initialDelaySeconds: 60
+        failureThreshold: 3
+        timeoutSeconds: 5
+        periodSeconds: 5
+      startup:
+        initialDelaySeconds: 10
+        failureThreshold: 20
+        timeoutSeconds: 5
+        periodSeconds: 30
+    engines:
+      debugLevel: "NONE"
+      hideHostContent: true
+      enginesNodeManaged: false
+      receiveTimeout: 0
+      groups:
+        - name: "standard-group"
+          engines: 4
+          type: "STANDARD"
+          labels: {}
+          affinity: {}
+          nodeSelector: {}
+          tolerations: []
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+        - name: "high-memory-group"
+          engines: 2
+          type: "STANDARD"
+          labels:
+            workload: "high-memory"
+          affinity: {}
+          nodeSelector: {}
+          tolerations: []
+          resources:
+            requests:
+              memory: 2Gi
+              cpu: 1000m
+
+  deployment:
+    hostname: fme.itlusions.nl
+    port: 443
+    tlsSecretName: fme-itlusions-nl-tls
+    certManager:
+      issuerName: letsencrypt-issuer
+      issuerType: cluster
+    numCores: 2
+    startAsRoot: false
+    useHostnameIngress: true
+    deployPostgresql: true
+    disableTLS: false
+    ingress:
+      general:
+        ingressClassName: "traefik"
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
+          nginx.ingress.kubernetes.io/affinity: cookie
+          nginx.ingress.kubernetes.io/session-cookie-name: fmeserver-ingress
+          nginx.ingress.kubernetes.io/session-cookie-hash: md5
+      web:
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+      migration:
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+      transact:
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "1209600"
+      websocket:
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "2592000"
+
+  annotations:
+    core:
+      statefulset: {}
+      template: {}
+    engine:
+      deployment: {}
+      template: {}
+    queue:
+      statefulset: {}
+      template: {}
+    websocket:
+      statefulset: {}
+      template: {}
+
+  labels:
+    core: {}
+    queue: {}
+    websocket: {}
+
+  scheduling:
+    core:
+      affinity: {}
+      nodeSelector: {}
+      tolerations: []
+    queue:
+      affinity: {}
+      nodeSelector: {}
+      tolerations: []
+    websocket:
+      affinity: {}
+      nodeSelector: {}
+      tolerations: []
+
+  resources:
+    core:
+      requests:
+        memory: 4Gi
+        cpu: 1000m
+      limits:
+        memory: 8Gi
+        cpu: 2000m
+    web:
+      requests:
+        memory: 2Gi
+        cpu: 1000m
+      limits:
+        memory: 4Gi
+        cpu: 2000m
+    queue:
+      requests:
+        memory: 512Mi
+        cpu: 200m
+      limits:
+        memory: 1Gi
+        cpu: 500m
+    websocket:
+      requests:
+        memory: 1Gi
+        cpu: 200m
+      limits:
+        memory: 2Gi
+        cpu: 500m
+
+  storage:
+    useHostDir: false
+    reclaimPolicy: Retain
+    postgresql:
+      size: 10Gi
+      class:
+      path:
+    fmeserver:
+      accessMode: ReadWriteOnce
+      size: 20Gi
+      class:
+      path:
+
+  postgresql:
+    image: 
+      tag: 16.6.0-debian-12-r0
+    primary:
+      persistence:
+        existingClaim: fmeserver-postgresql
+      resources:
+        requests:
+          memory: 1Gi
+          cpu: 500m
+        limits:
+          memory: 2Gi
+          cpu: 1000m
+    auth:
+      postgresqlPassword: changeme
+    livenessProbe:
+      initialDelaySeconds: 300

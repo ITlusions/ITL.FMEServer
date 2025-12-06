@@ -1,0 +1,39 @@
+# Helm
+# Note: We DO commit charts/*/charts/*.tgz for offline deployments
+# Only ignore temporary files
+charts/*/Chart.lock
+charts/*/tmpcharts/
+
+# Secrets & Local Config
+*-secrets.yaml
+*-override.yaml
+custom-values.yaml
+local-values.yaml
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Generated manifests
+manifests/
+output.yaml
+debug-output.yaml

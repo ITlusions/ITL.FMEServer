@@ -1,8 +1,8 @@
-apiVersion: v1
-appVersion: "2023.2"
-description: FME Server 2023.2 
+apiVersion: v2
 name: fmeserver-2023-2
+description: FME Server 2023.2 (Development)
 version: 0.2.67
+appVersion: "2023.2"
 dependencies:
   - name: fmeserver-2023-2
     repository: https://safesoftware.github.io/helm-charts
