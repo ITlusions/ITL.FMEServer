@@ -70,9 +70,9 @@ fmeserver-2023-2:
 
 
   deployment:
-    hostname: fme.dev.itlusions.nl
+    hostname: fme-2023-2.itlusions.nl
     port: 443
-    tlsSecretName: fme-dev-itlusions-nl-tls
+    tlsSecretName: fme-2023-2-itlusions-nl-tls
     certManager:
       issuerName: letsencrypt-issuer
       issuerType: cluster

@@ -56,7 +56,7 @@ ITL.FMEServer/
 - **Purpose:** Development/Legacy omgeving
 - **Resources:** Minimaal (512Mi-1.5Gi)
 - **Storage:** 2Gi + 1Gi DB
-- **Hostname:** fme.dev.itlusions.nl
+- **Hostname:** fme-2023-2.itlusions.nl
 - **Source:** Gekopieerd van originele `chart/` directory
 
 ### Chart 2: fmeserver-2024.0 (Test)
@@ -65,29 +65,39 @@ ITL.FMEServer/
 - **Purpose:** Test/Staging omgeving
 - **Resources:** Medium (1Gi-2Gi)
 - **Storage:** 5Gi + 2Gi DB
-- **Hostname:** fme.test.itlusions.nl
+- **Hostname:** fme-2024-0.itlusions.nl
 - **Status:** Ready to deploy
 
 ### Chart 3: fmeserver-2024.2 (Production)
 - **Location:** `charts/fmeserver-2024.2/`
-- **Image:** 2024.2.0 (Latest)
+- **Image:** 2024.2.0
 - **Purpose:** Production omgeving
 - **Resources:** Maximum (2Gi-4Gi + limits)
 - **Storage:** 20Gi + 10Gi DB (Retain policy)
-- **Hostname:** fme.itlusions.nl
+- **Hostname:** fme-2024-2.itlusions.nl
 - **Engines:** 4x 1Gi (vs 2x 512Mi in andere versies)
+- **Status:** Production ready
+
+### Chart 4: fmeserver-2025.2 (Production Latest)
+- **Location:** `charts/fmeserver-2025.2/`
+- **Image:** 2025.2.0 (Latest)
+- **Purpose:** Production omgeving (nieuwste versie)
+- **Resources:** Maximum (2Gi-4Gi + high-memory engines)
+- **Storage:** 20Gi + 10Gi DB (Retain policy)
+- **Hostname:** fme-2025-2.itlusions.nl
+- **Engines:** 6 engines (4x 1Gi + 2x 2Gi high-memory)
 - **Status:** Production ready
 
 ## Belangrijke Configuratie Verschillen
 
-| Feature | 2023.2 (Dev) | 2024.0 (Test) | 2024.2 (Prod) |
-|---------|--------------|---------------|---------------|
-| PostgreSQL | 15.4.0 | 15.8.0 | 16.4.0 |
-| Core Memory | 1.5Gi | 2Gi | 4Gi |
-| Web Memory | 1Gi | 1.5Gi | 2Gi (+ limits) |
-| Engines | 2x 512Mi | 2x 512Mi | 4x 1Gi |
-| FME Storage | 2Gi | 5Gi | 20Gi |
-| DB Storage | 1Gi | 2Gi | 10Gi |
+| Feature | 2023.2 (Dev) | 2024.0 (Test) | 2024.2 (Prod) | 2025.2 (Latest) |
+|---------|--------------|---------------|---------------|-----------------|
+| PostgreSQL | 15.4.0 | 15.8.0 | 16.4.0 | 16.6.0 |
+| Core Memory | 1.5Gi | 2Gi | 4Gi | 4Gi |
+| Web Memory | 1Gi | 1.5Gi | 2Gi (+ limits) | 2Gi (+ limits) |
+| Engines | 2x 512Mi | 2x 512Mi | 4x 1Gi | 4x 1Gi + 2x 2Gi |
+| FME Storage | 2Gi | 5Gi | 20Gi | 20Gi |
+| DB Storage | 1Gi | 2Gi | 10Gi | 10Gi |
 | Reclaim Policy | Delete | Delete | Retain |
 | CPU Cores | 1 | 1 | 2 |
 

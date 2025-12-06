@@ -64,9 +64,9 @@ fmeflow:
               cpu: 200m
 
   deployment:
-    hostname: fme.test.itlusions.nl
+    hostname: fme-2024-0.itlusions.nl
     port: 443
-    tlsSecretName: fme-test-itlusions-nl-tls
+    tlsSecretName: fme-2024-0-itlusions-nl-tls
     certManager:
       issuerName: letsencrypt-issuer
       issuerType: cluster

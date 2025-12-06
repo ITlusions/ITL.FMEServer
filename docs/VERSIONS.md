@@ -4,10 +4,10 @@
 
 | Versie | Chart Directory | Status | Omgeving | Hostname |
 |--------|----------------|--------|----------|----------|
-| 2023.2.3 | `charts/fmeserver-2023.2` | ✅ Actief | Development | fme.dev.itlusions.nl |
-| 2024.0.x | `charts/fmeserver-2024.0` | ✅ Beschikbaar | Test | fme.test.itlusions.nl |
-| 2024.2.x | `charts/fmeserver-2024.2` | ✅ Actief | Staging | fme.staging.itlusions.nl |
-| 2025.2.x | `charts/fmeserver-2025.2` | ✅ Latest | Production | fme.itlusions.nl |
+| 2023.2.3 | `charts/fmeserver-2023.2` | ✅ Actief | Development | fme-2023-2.itlusions.nl |
+| 2024.0.x | `charts/fmeserver-2024.0` | ✅ Beschikbaar | Test | fme-2024-0.itlusions.nl |
+| 2024.2.x | `charts/fmeserver-2024.2` | ✅ Actief | Staging | fme-2024-2.itlusions.nl |
+| 2025.2.x | `charts/fmeserver-2025.2` | ✅ Latest | Production | fme-2025-2.itlusions.nl |
 
 ## Quick Deployment
 

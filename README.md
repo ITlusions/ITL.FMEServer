@@ -84,10 +84,10 @@ helm list -A | grep fmeserver
 
 | Omgeving | Versie | Namespace | Hostname |
 |----------|--------|-----------|----------|
-| Development | 2023.2.3 | fmeserver-dev | fme.dev.itlusions.nl |
-| Test | 2024.0.x | fmeserver-test | fme.test.itlusions.nl |
-| Staging | 2024.2.x | fmeserver-staging | fme.staging.itlusions.nl |
-| Production | 2025.2.x | fmeserver-prod | fme.itlusions.nl |
+| Development | 2023.2.3 | fmeserver-dev | fme-2023-2.itlusions.nl |
+| Test | 2024.0.x | fmeserver-test | fme-2024-0.itlusions.nl |
+| Staging | 2024.2.x | fmeserver-staging | fme-2024-2.itlusions.nl |
+| Production | 2025.2.x | fmeserver-prod | fme-2025-2.itlusions.nl |
 
 ## Versie Management
 
