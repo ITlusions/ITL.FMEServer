@@ -64,6 +64,10 @@ ITL.FMEServer/
 │   ├── VERSIONS.md           # Versie vergelijking
 │   ├── OFFLINE_DEPLOYMENT.md # Air-gapped setup
 │   └── SETUP_COMPLETE.md     # Migration guide
+├── examples/                 # 💡 FME Workspace voorbeelden
+│   ├── README.md             # Voorbeeld projecten documentatie
+│   ├── brandweer-noodsteunpunten.fmw  # Calamiteitenbeheer workspace
+│   └── database_setup.sql    # PostgreSQL/PostGIS schema setup
 ├── archive/                  # Oude chart backup
 ├── .gitignore
 └── README.md                 # Dit bestand
@@ -265,6 +269,47 @@ helm install fmeserver-2024 ./charts/fmeserver-2024.0 -n fmeserver-2024
 ✅ **Maak backups voor migratie**
 ❌ **Upgrade NIET in-place tussen major versies**
 ❌ **Share GEEN databases tussen versies**
+
+## Voorbeeld Projecten
+
+💡 **FME Workspace voorbeelden:** Zie [examples/README.md](examples/README.md)
+
+De `examples/` folder bevat complete FME workspace voorbeelden met database setup scripts:
+
+### Calamiteitenbeheer: Brandweer & Noodsteunpunten
+
+Complete workflow voor Nederlandse calamiteitenbeheer data:
+
+**Features:**
+- Multi-source data reading (PostgreSQL, WFS, CSV, GeoJSON)
+- Spatial processing (RD New → WGS84 transformatie)
+- Bereikbaarheidsanalyse (5km bufferzones)
+- PostGIS output met spatial indexing
+
+**Bestanden:**
+- `examples/brandweer-noodsteunpunten.fmw` - FME Workspace (2023.2+)
+- `examples/database_setup.sql` - Complete PostGIS database setup
+- `examples/README.md` - Volledige documentatie met:
+  - Database setup instructies
+  - FME Desktop & Server deployment
+  - Kubernetes/ArgoCD integration
+  - Sample queries en troubleshooting
+  - QGIS/Leaflet integration voorbeelden
+
+**Quick Start:**
+
+```bash
+# 1. Setup database
+psql -h localhost -U postgres -d calamiteiten -f examples/database_setup.sql
+
+# 2. Open workspace in FME Workbench
+fme.exe examples/brandweer-noodsteunpunten.fmw
+
+# 3. Of deploy naar FME Server
+# Zie examples/README.md voor details
+```
+
+📖 **[Lees de volledige documentatie →](examples/README.md)**
 
 ## Support Matrix
 

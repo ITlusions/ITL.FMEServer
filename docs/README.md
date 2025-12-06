@@ -8,7 +8,29 @@ Overzicht van alle documentatie voor de multi-version FME Server Helm Charts rep
 Start hier als je snel wilt beginnen met deployment:
 - **[../README.md](../README.md)** - Hoofddocument met repository overzicht en deployment opties
 
-### 📖 Detailed Guides
+### � Examples & Tutorials
+
+#### [../examples/README.md](../examples/README.md) - FME Workspace Voorbeelden ⭐ **NIEUW**
+Complete FME workspace voorbeelden met database setup.
+
+**Inhoud:**
+- **Calamiteitenbeheer Workspace:** Brandweer & Noodsteunpunten verwerking
+- Multi-source data reading (PostgreSQL, WFS, CSV, GeoJSON)
+- Spatial processing & coordinate transformatie (RD New → WGS84)
+- PostGIS database setup met spatial indices
+- Complete deployment guide (Desktop, Server, Kubernetes)
+- Integration examples (QGIS, Leaflet, Python)
+- Troubleshooting & best practices
+
+**Bestanden:**
+- `brandweer-noodsteunpunten.fmw` - FME Workspace
+- `database_setup.sql` - PostgreSQL/PostGIS schema
+
+**Gebruik wanneer:** Je een praktisch voorbeeld nodig hebt van FME workspaces met spatial data processing.
+
+---
+
+### �📖 Detailed Guides
 
 #### [ARGOCD.md](ARGOCD.md) - ArgoCD Deployment Guide ⭐ **NIEUW**
 GitOps deployment met ArgoCD ApplicationSet.

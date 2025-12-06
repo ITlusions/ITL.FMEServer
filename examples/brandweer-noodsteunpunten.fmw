@@ -1,0 +1,493 @@
+#! <?xml version="1.0" encoding="UTF-8"?>
+<WORKSPACE
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://www.safe.com/fme/2025.2/fme_workspace.xsd">
+  <GLOBAL_PARAMETERS>
+    <GLOBAL_PARAMETER>
+      <PARAMETER_NAME>SOURCE_PROJECTION</PARAMETER_NAME>
+      <PARAMETER_VALUE>EPSG:28992</PARAMETER_VALUE>
+      <PARAMETER_TYPE>TEXT</PARAMETER_TYPE>
+    </GLOBAL_PARAMETER>
+    <GLOBAL_PARAMETER>
+      <PARAMETER_NAME>OUTPUT_PROJECTION</PARAMETER_NAME>
+      <PARAMETER_VALUE>EPSG:4326</PARAMETER_VALUE>
+      <PARAMETER_TYPE>TEXT</PARAMETER_TYPE>
+    </GLOBAL_PARAMETER>
+    <GLOBAL_PARAMETER>
+      <PARAMETER_NAME>BUFFER_DISTANCE</PARAMETER_NAME>
+      <PARAMETER_VALUE>5000</PARAMETER_VALUE>
+      <PARAMETER_TYPE>NUMBER</PARAMETER_TYPE>
+    </GLOBAL_PARAMETER>
+  </GLOBAL_PARAMETERS>
+  
+  <WORKSPACE_METADATA>
+    <WORKSPACE_NAME>Brandweer en Noodsteunpunten Verwerking</WORKSPACE_NAME>
+    <DESCRIPTION>
+      Verwerkt brandweerkazernes en noodsteunpunten voor calamiteitenbeheer.
+      
+      Features:
+      - Inlezen brandweerkazernes (punt locaties)
+      - Inlezen noodsteunpunten voor evacuaties
+      - Bereikbaarheidsanalyse (5km buffer)
+      - Spatial join met gemeentegrenzen
+      - Export naar verschillende formaten (GeoJSON, Shapefile, PostGIS)
+      
+      Data bronnen:
+      - PDOK Brandweer
+      - PDOK Gemeentegrenzen
+      - Eigen noodsteunpunten database
+    </DESCRIPTION>
+    <AUTHOR>ITL Platform Team</AUTHOR>
+    <CATEGORY>Calamiteitenbeheer</CATEGORY>
+    <FME_BUILD_NUM>25230</FME_BUILD_NUM>
+  </WORKSPACE_METADATA>
+
+  <!-- READER: Brandweerkazernes -->
+  <READER>
+    <READER_NAME>BRANDWEER_KAZERNES</READER_NAME>
+    <READER_TYPE>POSTGIS</READER_TYPE>
+    <READER_KEYWORD>POSTGIS_READER</READER_KEYWORD>
+    <DATASET>
+      <DATASET_NAME>$(DB_HOST):$(DB_PORT)</DATASET_NAME>
+      <DATASET_TYPE>POSTGIS</DATASET_TYPE>
+    </DATASET>
+    <FEATURE_TYPES>
+      <FEATURE_TYPE>
+        <NAME>brandweer_kazernes</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <ATTRIBUTES>
+          <ATTRIBUTE>
+            <NAME>id</NAME>
+            <TYPE>integer</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>naam</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>adres</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>plaats</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>postcode</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>telefoonnummer</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>type_kazerne</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>veiligheidsregio</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>aantal_voertuigen</NAME>
+            <TYPE>integer</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>bemanning_24_7</NAME>
+            <TYPE>boolean</TYPE>
+          </ATTRIBUTE>
+        </ATTRIBUTES>
+      </FEATURE_TYPE>
+    </FEATURE_TYPES>
+  </READER>
+
+  <!-- READER: Noodsteunpunten -->
+  <READER>
+    <READER_NAME>NOODSTEUNPUNTEN</READER_NAME>
+    <READER_TYPE>POSTGIS</READER_TYPE>
+    <READER_KEYWORD>POSTGIS_READER</READER_KEYWORD>
+    <DATASET>
+      <DATASET_NAME>$(DB_HOST):$(DB_PORT)</DATASET_NAME>
+      <DATASET_TYPE>POSTGIS</DATASET_TYPE>
+    </DATASET>
+    <FEATURE_TYPES>
+      <FEATURE_TYPE>
+        <NAME>noodsteunpunten</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <ATTRIBUTES>
+          <ATTRIBUTE>
+            <NAME>id</NAME>
+            <TYPE>integer</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>naam</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>adres</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>plaats</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>type_locatie</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>capaciteit</NAME>
+            <TYPE>integer</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>faciliteiten</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>beschikbaarheid</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>contactpersoon</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+          <ATTRIBUTE>
+            <NAME>telefoonnummer</NAME>
+            <TYPE>varchar</TYPE>
+          </ATTRIBUTE>
+        </ATTRIBUTES>
+      </FEATURE_TYPE>
+    </FEATURE_TYPES>
+  </READER>
+
+  <!-- READER: Gemeentegrenzen voor ruimtelijke analyse -->
+  <READER>
+    <READER_NAME>GEMEENTEN</READER_NAME>
+    <READER_TYPE>WFS</READER_TYPE>
+    <READER_KEYWORD>WFS_READER</READER_KEYWORD>
+    <DATASET>
+      <DATASET_NAME>https://service.pdok.nl/kadaster/bestuurlijkegebieden/wfs/v1_0</DATASET_NAME>
+      <DATASET_TYPE>WFS</DATASET_TYPE>
+    </DATASET>
+    <FEATURE_TYPES>
+      <FEATURE_TYPE>
+        <NAME>Gemeentegebied</NAME>
+        <GEOMETRY>MULTIPOLYGON</GEOMETRY>
+      </FEATURE_TYPE>
+    </FEATURE_TYPES>
+  </READER>
+
+  <!-- TRANSFORMERS -->
+  <TRANSFORMERS>
+    
+    <!-- 1. Reprojector: Converteer naar WGS84 voor web mapping -->
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>Reprojector_Brandweer</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>Reprojector</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>SOURCE_CS</NAME>
+          <VALUE>$(SOURCE_PROJECTION)</VALUE>
+        </PARAMETER>
+        <PARAMETER>
+          <NAME>DEST_CS</NAME>
+          <VALUE>$(OUTPUT_PROJECTION)</VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT>BRANDWEER_KAZERNES</INPUT>
+      <OUTPUT>BRANDWEER_REPROJECTED</OUTPUT>
+    </TRANSFORMER>
+
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>Reprojector_Noodsteun</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>Reprojector</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>SOURCE_CS</NAME>
+          <VALUE>$(SOURCE_PROJECTION)</VALUE>
+        </PARAMETER>
+        <PARAMETER>
+          <NAME>DEST_CS</NAME>
+          <VALUE>$(OUTPUT_PROJECTION)</VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT>NOODSTEUNPUNTEN</INPUT>
+      <OUTPUT>NOODSTEUN_REPROJECTED</OUTPUT>
+    </TRANSFORMER>
+
+    <!-- 2. Bufferer: Maak 5km bereikbaarheidszone rond brandweerkazernes -->
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>Bufferer_Brandweer</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>Bufferer</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>BUFFER_DISTANCE</NAME>
+          <VALUE>$(BUFFER_DISTANCE)</VALUE>
+        </PARAMETER>
+        <PARAMETER>
+          <NAME>BUFFER_TYPE</NAME>
+          <VALUE>GEODESIC</VALUE>
+        </PARAMETER>
+        <PARAMETER>
+          <NAME>END_CAP_STYLE</NAME>
+          <VALUE>ROUND</VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT>BRANDWEER_REPROJECTED</INPUT>
+      <OUTPUT>BRANDWEER_BUFFER</OUTPUT>
+    </TRANSFORMER>
+
+    <!-- 3. AttributeCreator: Voeg metadata toe -->
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>AttributeCreator_Brandweer</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>AttributeCreator</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>ATTRIBUTES</NAME>
+          <VALUE>
+            verwerkt_datum=@DateTimeNow()
+            data_bron=Brandweer NL
+            bereikbaarheid_km=5
+            coordinaat_systeem=WGS84
+          </VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT>BRANDWEER_REPROJECTED</INPUT>
+      <OUTPUT>BRANDWEER_ENRICHED</OUTPUT>
+    </TRANSFORMER>
+
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>AttributeCreator_Noodsteun</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>AttributeCreator</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>ATTRIBUTES</NAME>
+          <VALUE>
+            verwerkt_datum=@DateTimeNow()
+            data_bron=Noodsteunpunten DB
+            type_faciliteit=Evacuatie
+            coordinaat_systeem=WGS84
+          </VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT>NOODSTEUN_REPROJECTED</INPUT>
+      <OUTPUT>NOODSTEUN_ENRICHED</OUTPUT>
+    </TRANSFORMER>
+
+    <!-- 4. PointOnAreaOverlayer: Welke noodsteunpunten vallen in brandweer bereikbaarheidszone -->
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>PointOnAreaOverlayer</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>PointOnAreaOverlayer</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>ATTRIBUTE_ACCUMULATION</NAME>
+          <VALUE>PREFIX_SUFFIX</VALUE>
+        </PARAMETER>
+        <PARAMETER>
+          <NAME>POINT_PREFIX</NAME>
+          <VALUE>noodsteun_</VALUE>
+        </PARAMETER>
+        <PARAMETER>
+          <NAME>AREA_PREFIX</NAME>
+          <VALUE>brandweer_</VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT_POINT>NOODSTEUN_ENRICHED</INPUT_POINT>
+      <INPUT_AREA>BRANDWEER_BUFFER</INPUT_AREA>
+      <OUTPUT>DEKKING_ANALYSE</OUTPUT>
+    </TRANSFORMER>
+
+    <!-- 5. SpatialFilter: Bepaal gemeente per locatie -->
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>SpatialFilter_Gemeente</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>SpatialFilter</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>SPATIAL_PREDICATE</NAME>
+          <VALUE>WITHIN</VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT_CANDIDATE>BRANDWEER_ENRICHED</INPUT_CANDIDATE>
+      <INPUT_FILTER>GEMEENTEN</INPUT_FILTER>
+      <OUTPUT>BRANDWEER_PER_GEMEENTE</OUTPUT>
+    </TRANSFORMER>
+
+    <!-- 6. StatisticsCalculator: Bereken statistieken per veiligheidsregio -->
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>StatisticsCalculator_Regio</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>StatisticsCalculator</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>GROUP_BY</NAME>
+          <VALUE>veiligheidsregio</VALUE>
+        </PARAMETER>
+        <PARAMETER>
+          <NAME>ATTRIBUTES_TO_ANALYZE</NAME>
+          <VALUE>aantal_voertuigen,capaciteit</VALUE>
+        </PARAMETER>
+        <PARAMETER>
+          <NAME>CALCULATE_STATS</NAME>
+          <VALUE>SUM,AVG,COUNT,MIN,MAX</VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT>BRANDWEER_ENRICHED</INPUT>
+      <OUTPUT>STATISTIEKEN_PER_REGIO</OUTPUT>
+    </TRANSFORMER>
+
+    <!-- 7. AttributeManager: Hernoem en clean attributen voor output -->
+    <TRANSFORMER>
+      <TRANSFORMER_NAME>AttributeManager_Cleanup</TRANSFORMER_NAME>
+      <TRANSFORMER_TYPE>AttributeManager</TRANSFORMER_TYPE>
+      <PARAMETERS>
+        <PARAMETER>
+          <NAME>ATTRIBUTE_ACTIONS</NAME>
+          <VALUE>
+            RENAME: naam -> locatie_naam
+            RENAME: type_kazerne -> kazerne_type
+            REMOVE: _geometry_type
+            REMOVE: _feature_type
+          </VALUE>
+        </PARAMETER>
+      </PARAMETERS>
+      <INPUT>BRANDWEER_ENRICHED</INPUT>
+      <OUTPUT>BRANDWEER_CLEAN</OUTPUT>
+    </TRANSFORMER>
+
+  </TRANSFORMERS>
+
+  <!-- WRITERS -->
+  
+  <!-- Writer 1: GeoJSON voor web applicaties -->
+  <WRITER>
+    <WRITER_NAME>GEOJSON_OUTPUT</WRITER_NAME>
+    <WRITER_TYPE>GEOJSON</WRITER_TYPE>
+    <WRITER_KEYWORD>GEOJSON_WRITER</WRITER_KEYWORD>
+    <DATASET>
+      <DATASET_NAME>$(OUTPUT_FOLDER)/calamiteitenbeheer.geojson</DATASET_NAME>
+      <DATASET_TYPE>GEOJSON</DATASET_TYPE>
+    </DATASET>
+    <FEATURE_TYPES>
+      <FEATURE_TYPE>
+        <NAME>brandweerkazernes</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <INPUT>BRANDWEER_CLEAN</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>noodsteunpunten</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <INPUT>NOODSTEUN_ENRICHED</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>bereikbaarheidszones</NAME>
+        <GEOMETRY>POLYGON</GEOMETRY>
+        <INPUT>BRANDWEER_BUFFER</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>dekking_analyse</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <INPUT>DEKKING_ANALYSE</INPUT>
+      </FEATURE_TYPE>
+    </FEATURE_TYPES>
+  </WRITER>
+
+  <!-- Writer 2: PostGIS voor opslag in database -->
+  <WRITER>
+    <WRITER_NAME>POSTGIS_OUTPUT</WRITER_NAME>
+    <WRITER_TYPE>POSTGIS</WRITER_TYPE>
+    <WRITER_KEYWORD>POSTGIS_WRITER</WRITER_KEYWORD>
+    <DATASET>
+      <DATASET_NAME>$(DB_HOST):$(DB_PORT)</DATASET_NAME>
+      <DATASET_TYPE>POSTGIS</DATASET_TYPE>
+    </DATASET>
+    <PARAMETERS>
+      <PARAMETER>
+        <NAME>DATABASE</NAME>
+        <VALUE>$(DB_NAME)</VALUE>
+      </PARAMETER>
+      <PARAMETER>
+        <NAME>SCHEMA</NAME>
+        <VALUE>calamiteiten</VALUE>
+      </PARAMETER>
+      <PARAMETER>
+        <NAME>OVERWRITE_TABLE</NAME>
+        <VALUE>YES</VALUE>
+      </PARAMETER>
+      <PARAMETER>
+        <NAME>GEOMETRY_ENCODING</NAME>
+        <VALUE>POSTGIS_BINARY</VALUE>
+      </PARAMETER>
+    </PARAMETERS>
+    <FEATURE_TYPES>
+      <FEATURE_TYPE>
+        <NAME>brandweer_kazernes_processed</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <INPUT>BRANDWEER_CLEAN</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>noodsteunpunten_processed</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <INPUT>NOODSTEUN_ENRICHED</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>bereikbaarheid_5km</NAME>
+        <GEOMETRY>POLYGON</GEOMETRY>
+        <INPUT>BRANDWEER_BUFFER</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>statistieken_regio</NAME>
+        <GEOMETRY>NONE</GEOMETRY>
+        <INPUT>STATISTIEKEN_PER_REGIO</INPUT>
+      </FEATURE_TYPE>
+    </FEATURE_TYPES>
+  </WRITER>
+
+  <!-- Writer 3: Shapefile voor GIS applicaties -->
+  <WRITER>
+    <WRITER_NAME>SHAPEFILE_OUTPUT</WRITER_NAME>
+    <WRITER_TYPE>ESRI_SHAPE</WRITER_TYPE>
+    <WRITER_KEYWORD>SHAPE_WRITER</WRITER_KEYWORD>
+    <DATASET>
+      <DATASET_NAME>$(OUTPUT_FOLDER)/shapefiles/</DATASET_NAME>
+      <DATASET_TYPE>ESRI_SHAPE</DATASET_TYPE>
+    </DATASET>
+    <FEATURE_TYPES>
+      <FEATURE_TYPE>
+        <NAME>brandweer_kazernes</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <INPUT>BRANDWEER_CLEAN</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>noodsteunpunten</NAME>
+        <GEOMETRY>POINT</GEOMETRY>
+        <INPUT>NOODSTEUN_ENRICHED</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>bereikbaarheid</NAME>
+        <GEOMETRY>POLYGON</GEOMETRY>
+        <INPUT>BRANDWEER_BUFFER</INPUT>
+      </FEATURE_TYPE>
+    </FEATURE_TYPES>
+  </WRITER>
+
+  <!-- Writer 4: Excel rapport met statistieken -->
+  <WRITER>
+    <WRITER_NAME>EXCEL_RAPPORT</WRITER_NAME>
+    <WRITER_TYPE>XLSXW</WRITER_TYPE>
+    <WRITER_KEYWORD>EXCEL_WRITER</WRITER_KEYWORD>
+    <DATASET>
+      <DATASET_NAME>$(OUTPUT_FOLDER)/calamiteitenbeheer_rapport.xlsx</DATASET_NAME>
+      <DATASET_TYPE>XLSXW</DATASET_TYPE>
+    </DATASET>
+    <FEATURE_TYPES>
+      <FEATURE_TYPE>
+        <NAME>Statistieken_Veiligheidsregio</NAME>
+        <INPUT>STATISTIEKEN_PER_REGIO</INPUT>
+      </FEATURE_TYPE>
+      <FEATURE_TYPE>
+        <NAME>Dekking_Analyse</NAME>
+        <INPUT>DEKKING_ANALYSE</INPUT>
+      </FEATURE_TYPE>
+    </FEATURE_TYPES>
+  </WRITER>
+
+</WORKSPACE>
