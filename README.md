@@ -2,10 +2,40 @@
 
 Repository voor meerdere FME Server versies als Helm charts.
 
+## Deployment Opties
+
+### 🚀 ArgoCD (Aanbevolen)
+
+Voor automatische GitOps deployment van alle versies:
+
+```bash
+# Deploy alle versies met ApplicationSet
+kubectl apply -f argocd/applicationset.yaml
+
+# Of deploy enkele versie
+kubectl apply -f argocd/application.yaml
+```
+
+📖 **Zie [docs/ARGOCD.md](docs/ARGOCD.md) voor complete ArgoCD guide**
+
+### 📦 Helm (Handmatig)
+
+Voor directe deployment met Helm CLI:
+
+```bash
+helm install fmeserver-prod ./charts/fmeserver-2025.2 \
+  -n fmeserver-prod --create-namespace
+```
+
+📖 **Zie [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) voor Helm deployment guide**
+
 ## Structuur
 
 ```
 ITL.FMEServer/
+├── argocd/                   # 🚀 ArgoCD configuratie
+│   ├── applicationset.yaml   # Deploy alle versies
+│   └── application.yaml      # Deploy enkele versie
 ├── charts/
 │   ├── fmeserver-2023.2/     # FME Server 2023.2.x (Development)
 │   │   ├── Chart.yaml
@@ -29,7 +59,8 @@ ITL.FMEServer/
 │       └── templates/
 ├── docs/                     # 📚 Alle documentatie
 │   ├── README.md             # Documentatie index
-│   ├── DEPLOYMENT.md         # Deployment guide
+│   ├── ARGOCD.md             # ArgoCD deployment guide
+│   ├── DEPLOYMENT.md         # Helm deployment guide
 │   ├── VERSIONS.md           # Versie vergelijking
 │   ├── OFFLINE_DEPLOYMENT.md # Air-gapped setup
 │   └── SETUP_COMPLETE.md     # Migration guide

@@ -1,0 +1,121 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: fmeserver-versions
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: fmeserver-applicationset
+    app.kubernetes.io/part-of: itl-platform
+    app.kubernetes.io/component: fmeserver
+spec:
+  generators:
+  # List generator - elke versie = 1 specifieke omgeving
+  - list:
+      elements:
+      # FME Server 2023.2 → Development omgeving
+      - version: "2023.2"
+        versionTag: "2023-2"
+        chartPath: charts/fmeserver-2023.2
+        namespace: fmeserver-dev
+        hostname: fme-2023-2.itlusions.nl
+        tlsSecretName: fme-2023-2-itlusions-nl-tls
+      
+      # FME Flow 2024.0 → Test omgeving
+      - version: "2024.0"
+        versionTag: "2024-0"
+        chartPath: charts/fmeserver-2024.0
+        namespace: fmeserver-test
+        hostname: fme-2024-0.itlusions.nl
+        tlsSecretName: fme-2024-0-itlusions-nl-tls
+      
+      # FME Flow 2024.2 → Staging omgeving
+      - version: "2024.2"
+        versionTag: "2024-2"
+        chartPath: charts/fmeserver-2024.2
+        namespace: fmeserver-staging
+        hostname: fme-2024-2.itlusions.nl
+        tlsSecretName: fme-2024-2-itlusions-nl-tls
+      
+      # FME Flow 2025.2 → Production omgeving
+      - version: "2025.2"
+        versionTag: "2025-2"
+        chartPath: charts/fmeserver-2025.2
+        namespace: fmeserver-prod
+        hostname: fme-2025-2.itlusions.nl
+        tlsSecretName: fme-2025-2-itlusions-nl-tls
+  
+  template:
+    metadata:
+      name: 'fmeserver-{{versionTag}}'
+      namespace: argocd
+      labels:
+        app.kubernetes.io/name: fmeserver
+        app.kubernetes.io/version: '{{version}}'
+        app.kubernetes.io/part-of: itl-platform
+        app.kubernetes.io/component: fmeserver
+      annotations:
+        argocd.argoproj.io/sync-wave: "3"
+        argocd.argoproj.io/sync-options: CreateNamespace=true
+        notifications.argoproj.io/subscribe.on-sync-succeeded.slack: fme-deployments
+        notifications.argoproj.io/subscribe.on-sync-failed.slack: fme-deployments
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    
+    spec:
+      project: itl-platform
+      
+      source:
+        repoURL: https://github.com/ITlusions/ITL.FMEServer.git
+        targetRevision: main
+        path: '{{chartPath}}'
+        helm:
+          releaseName: 'fmeserver-{{versionTag}}'
+          valueFiles:
+            - values.yaml
+      
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+          allowEmpty: false
+        syncOptions:
+          - CreateNamespace=true
+          - PrunePropagationPolicy=foreground
+          - PruneLast=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 5m
+      
+      revisionHistoryLimit: 10
+      
+      # Ignore differences voor HPA compatibility
+      ignoreDifferences:
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/replicas
+        - group: apps
+          kind: StatefulSet
+          jsonPointers:
+            - /spec/replicas
+      
+      info:
+        - name: 'Version'
+          value: '{{version}}'
+        - name: 'FME Server URL'
+          value: 'https://{{hostname}}'
+        - name: 'Repository'
+          value: 'https://github.com/ITlusions/ITL.FMEServer'
+        - name: 'Chart Path'
+          value: '{{chartPath}}'
+        - name: 'Namespace'
+          value: '{{namespace}}'

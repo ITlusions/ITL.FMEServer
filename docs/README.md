@@ -6,12 +6,31 @@ Overzicht van alle documentatie voor de multi-version FME Server Helm Charts rep
 
 ### 🚀 Quick Start
 Start hier als je snel wilt beginnen met deployment:
-- **[../README.md](../README.md)** - Hoofddocument met repository overzicht en basis gebruik
+- **[../README.md](../README.md)** - Hoofddocument met repository overzicht en deployment opties
 
 ### 📖 Detailed Guides
 
-#### [DEPLOYMENT.md](DEPLOYMENT.md) - Deployment Guide
-Praktische deployment voorbeelden en commando's.
+#### [ARGOCD.md](ARGOCD.md) - ArgoCD Deployment Guide ⭐ **NIEUW**
+GitOps deployment met ArgoCD ApplicationSet.
+
+**Inhoud:**
+- ApplicationSet vs Individual Application
+- Deploy alle versies tegelijk
+- Version-specific DNS configuratie
+- Automated sync & self-healing
+- Secrets management voor ArgoCD
+- Monitoring & troubleshooting
+- Rollback procedures
+- Best practices voor GitOps
+- Multi-cluster deployment
+- Progressive delivery
+
+**Gebruik wanneer:** Je wilt automatische, GitOps-based deployment van FME Server met ArgoCD.
+
+---
+
+#### [DEPLOYMENT.md](DEPLOYMENT.md) - Helm Deployment Guide
+Praktische Helm deployment voorbeelden en commando's.
 
 **Inhoud:**
 - Basic deployments (Development, Test, Staging, Production)
@@ -24,7 +43,7 @@ Praktische deployment voorbeelden en commando's.
 - Secrets management
 - Useful aliases en tips
 
-**Gebruik wanneer:** Je een FME Server versie wilt deployen of upgraden.
+**Gebruik wanneer:** Je handmatig met Helm CLI wilt deployen of upgraden.
 
 ---
 
@@ -80,24 +99,35 @@ Complete guide over de repository restructuring en migratie van oude setup.
 ### Ik wil...
 
 #### ...snel een FME Server deployen
-→ Start met [../README.md](../README.md) voor overzicht  
-→ Ga naar [DEPLOYMENT.md](DEPLOYMENT.md) sectie "Basic Deployments"
+→ Voor GitOps: [ARGOCD.md](ARGOCD.md) sectie "Deploy ApplicationSet"  
+→ Voor Helm: [DEPLOYMENT.md](DEPLOYMENT.md) sectie "Basic Deployments"  
+→ Start met [../README.md](../README.md) voor overzicht
+
+#### ...alle versies tegelijk deployen
+→ Gebruik [ARGOCD.md](ARGOCD.md) sectie "ApplicationSet Deployment"  
+→ ApplicationSet deployed automatisch alle 4 versies
 
 #### ...upgraden naar een nieuwe versie
 → Check [VERSIONS.md](VERSIONS.md) sectie "Upgrade Paden"  
-→ Gebruik [DEPLOYMENT.md](DEPLOYMENT.md) sectie "Upgrades"
+→ Met ArgoCD: [ARGOCD.md](ARGOCD.md) - auto-sync bij Git push  
+→ Met Helm: [DEPLOYMENT.md](DEPLOYMENT.md) sectie "Upgrades"
 
 #### ...deployen zonder internet
 → Volg [OFFLINE_DEPLOYMENT.md](OFFLINE_DEPLOYMENT.md) stap voor stap
+
+#### ...automatische sync en self-healing
+→ Gebruik [ARGOCD.md](ARGOCD.md) met automated sync policy  
+→ Drift wordt automatisch gedetecteerd en gecorrigeerd
 
 #### ...begrijpen hoe de repository werkt
 → Lees [SETUP_COMPLETE.md](SETUP_COMPLETE.md) voor complete context  
 → Check [VERSIONS.md](VERSIONS.md) voor versie details
 
 #### ...troubleshooten
-→ Check [DEPLOYMENT.md](DEPLOYMENT.md) sectie "Monitoring Commands"  
-→ Check [VERSIONS.md](VERSIONS.md) sectie "Troubleshooting"  
-→ Check [OFFLINE_DEPLOYMENT.md](OFFLINE_DEPLOYMENT.md) sectie "Troubleshooting"
+→ ArgoCD issues: [ARGOCD.md](ARGOCD.md) sectie "Troubleshooting"  
+→ Helm issues: [DEPLOYMENT.md](DEPLOYMENT.md) sectie "Monitoring Commands"  
+→ Versie issues: [VERSIONS.md](VERSIONS.md) sectie "Troubleshooting"  
+→ Offline issues: [OFFLINE_DEPLOYMENT.md](OFFLINE_DEPLOYMENT.md) sectie "Troubleshooting"
 
 #### ...weten welke versie te gebruiken
 → Check [VERSIONS.md](VERSIONS.md) sectie "Versie Verschillen"  

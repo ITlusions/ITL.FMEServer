@@ -1,0 +1,77 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fmeserver-2025-2
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: fmeserver
+    app.kubernetes.io/version: "2025.2"
+    app.kubernetes.io/environment: production
+    app.kubernetes.io/part-of: itl-platform
+    app.kubernetes.io/component: fmeserver
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: fme-deployments
+    notifications.argoproj.io/subscribe.on-sync-failed.slack: fme-deployments
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: itl-platform
+  
+  source:
+    repoURL: https://github.com/ITlusions/ITL.FMEServer.git
+    targetRevision: main
+    path: charts/fmeserver-2025.2
+    helm:
+      releaseName: fmeserver-2025-2
+      valueFiles:
+        - values.yaml
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: fmeserver-prod
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 5m
+  
+  revisionHistoryLimit: 10
+  
+  # Ignore differences in certain fields that are managed externally
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
+    - group: apps
+      kind: StatefulSet
+      jsonPointers:
+        - /spec/replicas
+  
+  info:
+    - name: 'Environment'
+      value: 'production'
+    - name: 'Version'
+      value: '2025.2'
+    - name: 'FME Server URL'
+      value: 'https://fme-2025-2.itlusions.nl'
+    - name: 'Repository'
+      value: 'https://github.com/ITlusions/ITL.FMEServer'
+    - name: 'Chart Path'
+      value: 'charts/fmeserver-2025.2'
+    - name: 'Namespace'
+      value: 'fmeserver-prod'
