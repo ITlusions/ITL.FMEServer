@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Sync Intervals -->
+    <string-array name="sync_interval_entries">
+        <item>5 minuten</item>
+        <item>15 minuten</item>
+        <item>30 minuten</item>
+        <item>1 uur</item>
+        <item>2 uur</item>
+        <item>4 uur</item>
+        <item>Alleen handmatig</item>
+    </string-array>
+    
+    <string-array name="sync_interval_values">
+        <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>240</item>
+        <item>0</item>
+    </string-array>
+    
+    <!-- Brandweer Types -->
+    <string-array name="brandweer_types">
+        <item>Beroeps</item>
+        <item>Vrijwillig</item>
+        <item>Combizerne</item>
+    </string-array>
+    
+    <!-- Noodopvang Types -->
+    <string-array name="noodopvang_types">
+        <item>Sporthal</item>
+        <item>School</item>
+        <item>Gemeentehuis</item>
+        <item>Kerk</item>
+        <item>Bedrijf</item>
+        <item>Anders</item>
+    </string-array>
+    
+    <!-- Compass Directions -->
+    <string-array name="compass_directions">
+        <item>N</item>
+        <item>NNO</item>
+        <item>NO</item>
+        <item>ONO</item>
+        <item>O</item>
+        <item>OZO</item>
+        <item>ZO</item>
+        <item>ZZO</item>
+        <item>Z</item>
+        <item>ZZW</item>
+        <item>ZW</item>
+        <item>WZW</item>
+        <item>W</item>
+        <item>WNW</item>
+        <item>NW</item>
+        <item>NNW</item>
+    </string-array>
+</resources>

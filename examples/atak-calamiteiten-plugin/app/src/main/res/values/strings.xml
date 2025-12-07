@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Calamiteiten NL</string>
+    <string name="plugin_name">Calamiteiten Plugin</string>
+    <string name="plugin_description">Nederlandse noodvoorzieningen en calamiteiten informatie</string>
+    
+    <!-- Menu Items -->
+    <string name="menu_calamiteiten">Calamiteiten</string>
+    <string name="menu_brandweer">Brandweerkazernes</string>
+    <string name="menu_noodopvang">Noodopvang</string>
+    <string name="menu_sync">Synchroniseren</string>
+    <string name="menu_settings">Instellingen</string>
+    <string name="menu_about">Over</string>
+    
+    <!-- Layer Names -->
+    <string name="layer_brandweer">Brandweer</string>
+    <string name="layer_noodopvang">Noodopvang</string>
+    <string name="layer_veiligheidsregios">Veiligheidsregio\'s</string>
+    
+    <!-- Actions -->
+    <string name="action_show_coverage">Toon dekkingsgebied</string>
+    <string name="action_hide_coverage">Verberg dekkingsgebied</string>
+    <string name="action_find_nearest">Zoek dichtstbijzijnde</string>
+    <string name="action_navigate">Navigeer</string>
+    <string name="action_call">Bel</string>
+    <string name="action_refresh">Ververs</string>
+    <string name="action_share_location">Deel locatie</string>
+    
+    <!-- Sync -->
+    <string name="sync_in_progress">Synchroniseren…</string>
+    <string name="sync_success">Synchronisatie voltooid</string>
+    <string name="sync_failed">Synchronisatie mislukt</string>
+    <string name="sync_cancelled">Synchronisatie geannuleerd</string>
+    <string name="sync_last_update">Laatst bijgewerkt: %s</string>
+    <string name="sync_never">Nog nooit gesynchroniseerd</string>
+    
+    <!-- Messages -->
+    <string name="msg_loading">Gegevens laden…</string>
+    <string name="msg_no_data">Geen gegevens beschikbaar</string>
+    <string name="msg_no_internet">Geen internetverbinding</string>
+    <string name="msg_offline_mode">Offline modus - gebruik cached data</string>
+    <string name="msg_api_error">API fout: %s</string>
+    <string name="msg_nearest_found">Dichtstbijzijnde gevonden op %s meter</string>
+    <string name="msg_no_location">Locatie niet beschikbaar</string>
+    
+    <!-- Brandweer -->
+    <string name="brandweer_title">Brandweerkazerne</string>
+    <string name="brandweer_type">Type: %s</string>
+    <string name="brandweer_regio">Veiligheidsregio: %s</string>
+    <string name="brandweer_phone">Telefoon: %s</string>
+    <string name="brandweer_address">Adres: %s</string>
+    <string name="brandweer_coverage_radius">Dekkingsgebied: 5 km</string>
+    
+    <!-- Noodopvang -->
+    <string name="noodopvang_title">Noodopvanglocatie</string>
+    <string name="noodopvang_capacity">Capaciteit: %d personen</string>
+    <string name="noodopvang_available">Status: Beschikbaar</string>
+    <string name="noodopvang_unavailable">Status: Niet beschikbaar</string>
+    <string name="noodopvang_facilities">Faciliteiten:</string>
+    <string name="noodopvang_food">Eten en drinken</string>
+    <string name="noodopvang_water">Drinkwater</string>
+    <string name="noodopvang_medical">Medische hulp</string>
+    <string name="noodopvang_sleeping">Slaapplaatsen</string>
+    <string name="noodopvang_no_facilities">Geen specifieke faciliteiten</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Instellingen</string>
+    <string name="settings_category_api">API Configuratie</string>
+    <string name="settings_category_sync">Synchronisatie</string>
+    <string name="settings_category_notifications">Notificaties</string>
+    <string name="settings_category_display">Weergave</string>
+    
+    <string name="settings_api_endpoint">API Endpoint</string>
+    <string name="settings_api_endpoint_summary">FME Server API URL</string>
+    <string name="settings_api_key">API Key</string>
+    <string name="settings_api_key_summary">Authenticatie key voor API toegang</string>
+    
+    <string name="settings_sync_enabled">Automatisch synchroniseren</string>
+    <string name="settings_sync_enabled_summary">Periodiek data ophalen van server</string>
+    <string name="settings_sync_interval">Synchronisatie interval</string>
+    <string name="settings_sync_interval_summary">Hoe vaak data wordt gesynchroniseerd</string>
+    
+    <string name="settings_offline_mode">Offline modus</string>
+    <string name="settings_offline_mode_summary">Gebruik alleen lokale data (geen sync)</string>
+    
+    <string name="settings_notifications_sync">Sync notificaties</string>
+    <string name="settings_notifications_sync_summary">Toon meldingen bij synchronisatie</string>
+    <string name="settings_notifications_alerts">Calamiteiten alerts</string>
+    <string name="settings_notifications_alerts_summary">Toon meldingen bij nieuwe calamiteiten</string>
+    
+    <string name="settings_show_coverage">Toon dekkingsgebieden</string>
+    <string name="settings_show_coverage_summary">Toon 5km zones rond brandweerkazernes</string>
+    
+    <!-- About -->
+    <string name="about_title">Over Calamiteiten Plugin</string>
+    <string name="about_version">Versie %s</string>
+    <string name="about_description">Deze plugin toont Nederlandse noodvoorzieningen op de ATAK kaart voor snelle toegang tijdens calamiteiten.</string>
+    <string name="about_data_source">Data bron: FME Server / PostGIS</string>
+    <string name="about_author">Ontwikkeld door ITLusions</string>
+    <string name="about_license">Open Source - MIT License</string>
+    
+    <!-- Emergency -->
+    <string name="emergency_112">Noodgeval: Bel 112</string>
+    <string name="emergency_nearest_shelter">Dichtstbijzijnde opvang</string>
+    <string name="emergency_nearest_station">Dichtstbijzijnde kazerne</string>
+    <string name="emergency_distance">Afstand: %.1f km</string>
+    <string name="emergency_direction">Richting: %s</string>
+    
+    <!-- Errors -->
+    <string name="error_network">Netwerkfout - controleer internetverbinding</string>
+    <string name="error_api_unauthorized">Ongeautoriseerd - controleer API key</string>
+    <string name="error_api_not_found">API endpoint niet gevonden</string>
+    <string name="error_location">Kan locatie niet bepalen</string>
+    <string name="error_no_data">Geen data beschikbaar</string>
+    <string name="error_parse">Data verwerkingsfout</string>
+    
+    <!-- Dialogs -->
+    <string name="dialog_confirm">Bevestigen</string>
+    <string name="dialog_cancel">Annuleren</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_delete_cache">Cache verwijderen?</string>
+    <string name="dialog_delete_cache_message">Alle lokale data wordt verwijderd en opnieuw gesynchroniseerd.</string>
+    
+    <!-- Permissions -->
+    <string name="permission_location_rationale">Locatie toegang is nodig om dichtstbijzijnde voorzieningen te vinden.</string>
+    <string name="permission_internet_rationale">Internet toegang is nodig om data te synchroniseren.</string>
+</resources>

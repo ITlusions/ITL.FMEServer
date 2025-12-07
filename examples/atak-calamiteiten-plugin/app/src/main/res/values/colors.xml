@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary">#1976D2</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="primary_light">#BBDEFB</color>
+    <color name="accent">#FF5722</color>
+    
+    <!-- Emergency Colors -->
+    <color name="emergency_red">#D32F2F</color>
+    <color name="emergency_orange">#FF6F00</color>
+    <color name="emergency_yellow">#FBC02D</color>
+    <color name="emergency_green">#388E3C</color>
+    
+    <!-- Marker Colors -->
+    <color name="marker_brandweer">#D32F2F</color>        <!-- Rood -->
+    <color name="marker_noodopvang">#388E3C</color>       <!-- Groen -->
+    <color name="marker_noodopvang_full">#FBC02D</color>  <!-- Geel -->
+    <color name="marker_veiligheidsregio">#1976D2</color> <!-- Blauw -->
+    
+    <!-- Status Colors -->
+    <color name="status_available">#4CAF50</color>        <!-- Groen -->
+    <color name="status_unavailable">#F44336</color>      <!-- Rood -->
+    <color name="status_limited">#FF9800</color>          <!-- Oranje -->
+    <color name="status_unknown">#9E9E9E</color>          <!-- Grijs -->
+    
+    <!-- UI Colors -->
+    <color name="background">#FFFFFF</color>
+    <color name="background_dark">#212121</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_light">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+    
+    <!-- Coverage Zone Colors -->
+    <color name="coverage_zone_fill">#40FF5722</color>     <!-- Semi-transparent orange -->
+    <color name="coverage_zone_stroke">#FF5722</color>     <!-- Solid orange -->
+    
+    <!-- Facility Colors -->
+    <color name="facility_food">#4CAF50</color>      <!-- Groen -->
+    <color name="facility_water">#2196F3</color>     <!-- Blauw -->
+    <color name="facility_medical">#F44336</color>   <!-- Rood -->
+    <color name="facility_sleeping">#9C27B0</color>  <!-- Paars -->
+    
+    <!-- Notification Colors -->
+    <color name="notification_info">#2196F3</color>
+    <color name="notification_warning">#FF9800</color>
+    <color name="notification_error">#F44336</color>
+    <color name="notification_success">#4CAF50</color>
+    
+    <!-- Common Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="semi_transparent">#80000000</color>
+</resources>

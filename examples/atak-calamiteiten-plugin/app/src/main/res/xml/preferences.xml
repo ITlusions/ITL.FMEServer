@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- API Configuration -->
+    <PreferenceCategory
+        android:title="@string/settings_category_api"
+        android:key="category_api">
+        
+        <EditTextPreference
+            android:key="api_endpoint"
+            android:title="@string/settings_api_endpoint"
+            android:summary="@string/settings_api_endpoint_summary"
+            android:defaultValue="https://fme.itlusions.nl/api/v1/calamiteiten"
+            android:inputType="textUri" />
+        
+        <EditTextPreference
+            android:key="api_key"
+            android:title="@string/settings_api_key"
+            android:summary="@string/settings_api_key_summary"
+            android:inputType="textPassword" />
+    </PreferenceCategory>
+    
+    <!-- Synchronization -->
+    <PreferenceCategory
+        android:title="@string/settings_category_sync"
+        android:key="category_sync">
+        
+        <SwitchPreference
+            android:key="sync_enabled"
+            android:title="@string/settings_sync_enabled"
+            android:summary="@string/settings_sync_enabled_summary"
+            android:defaultValue="true" />
+        
+        <ListPreference
+            android:key="sync_interval_minutes"
+            android:title="@string/settings_sync_interval"
+            android:summary="@string/settings_sync_interval_summary"
+            android:defaultValue="15"
+            android:dependency="sync_enabled"
+            android:entries="@array/sync_interval_entries"
+            android:entryValues="@array/sync_interval_values" />
+        
+        <SwitchPreference
+            android:key="offline_mode"
+            android:title="@string/settings_offline_mode"
+            android:summary="@string/settings_offline_mode_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    
+    <!-- Notifications -->
+    <PreferenceCategory
+        android:title="@string/settings_category_notifications"
+        android:key="category_notifications">
+        
+        <SwitchPreference
+            android:key="notifications_sync"
+            android:title="@string/settings_notifications_sync"
+            android:summary="@string/settings_notifications_sync_summary"
+            android:defaultValue="true" />
+        
+        <SwitchPreference
+            android:key="notifications_alerts"
+            android:title="@string/settings_notifications_alerts"
+            android:summary="@string/settings_notifications_alerts_summary"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+    
+    <!-- Display -->
+    <PreferenceCategory
+        android:title="@string/settings_category_display"
+        android:key="category_display">
+        
+        <SwitchPreference
+            android:key="show_coverage_zones"
+            android:title="@string/settings_show_coverage"
+            android:summary="@string/settings_show_coverage_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    
+</PreferenceScreen>
